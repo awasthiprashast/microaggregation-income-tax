@@ -1,0 +1,14 @@
+column,missing_in_input,non_numeric_coerced,out_of_range,edit_rule_violations,repaired_by_identity,imputed
+age,159,9,23,0,0,191
+capital_gains,165,0,0,0,0,165
+city_tier,167,0,0,0,0,167
+deductions,142,0,0,0,136,6
+education,141,0,0,0,0,141
+gender,0,0,0,0,0,0
+gross_income,59,0,19,0,76,2
+marital_status,154,0,0,0,0,154
+num_dependents,161,0,18,0,0,179
+occupation,0,0,0,0,0,0
+region,0,0,0,0,0,0
+tax_paid,0,0,0,0,0,0
+taxable_income,56,0,0,0,51,5

@@ -1,0 +1,9 @@
+record,age · original,age · released,gross_income · original,gross_income · released,taxable_income · original,taxable_income · released,tax_paid · original,tax_paid · released,gender · original,gender · released,occupation · original,occupation · released,group size
+Sample 1,30–39,33.0,₹2.5L–5L,₹2.72L,₹0–2.5L,₹1.67L,₹0,₹0,Female,Female,Freelancer,Freelancer,5
+Sample 2,50–59,46.2,₹2.5L–5L,₹5.56L,₹2.5L–5L,₹3.76L,₹0,₹0,Female,Female,Self-Employed,Self-Employed,5
+Sample 3,50–59,47.4,₹7.5L–10L,₹7.43L,₹5L–7.5L,₹6.48L,₹0,₹0,Female,Female,Salaried-Private,Salaried-Private,5
+Sample 4,50–59,47.2,₹15L–25L,₹14.57L,₹10L–15L,₹12.15L,₹0–2.5L,"₹99,170",Female,Female,Salaried-Private,Salaried-Private,5
+Sample 5,20–29,27.6,₹10L–15L,₹13.35L,₹10L–15L,₹13.35L,₹0–2.5L,₹1.33L,Male,Female,Self-Employed,Self-Employed,5
+Sample 6,40–49,44.4,₹5L–7.5L,₹7.00L,₹5L–7.5L,₹6.38L,₹0,₹0,Female,Female,Salaried-Private,Self-Employed,5
+Sample 7,40–49,47.4,₹7.5L–10L,₹7.45L,₹5L–7.5L,₹6.22L,₹0,₹0,Male,Male,Self-Employed,Self-Employed,5
+Sample 8,30–39,38.6,₹5L–7.5L,₹7.51L,₹5L–7.5L,₹6.36L,₹0,₹0,Female,Male,Salaried-Private,Freelancer,5

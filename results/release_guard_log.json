@@ -1,0 +1,14 @@
+{
+  "mdav_k3": "released",
+  "mdav_k5": "released",
+  "mdav_k10": "released",
+  "mdav_k20": "released",
+  "individual_ranking_k3": "BLOCKED: Release blocked - k_anonymity: smallest equivalence class = 1 (required >= 3); Individual ranking (univariate) does not give k-anonymity on the joint attributes",
+  "individual_ranking_k5": "BLOCKED: Release blocked - k_anonymity: smallest equivalence class = 1 (required >= 5); Individual ranking (univariate) does not give k-anonymity on the joint attributes",
+  "individual_ranking_k10": "BLOCKED: Release blocked - k_anonymity: smallest equivalence class = 1 (required >= 10); Individual ranking (univariate) does not give k-anonymity on the joint attributes",
+  "individual_ranking_k20": "BLOCKED: Release blocked - k_anonymity: smallest equivalence class = 1 (required >= 20); Individual ranking (univariate) does not give k-anonymity on the joint attributes",
+  "random_k3": "released",
+  "random_k5": "released",
+  "random_k10": "released",
+  "random_k20": "released"
+}

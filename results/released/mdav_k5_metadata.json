@@ -1,0 +1,31 @@
+{
+  "title": "Micro-aggregated income and tax microdata (synthetic)",
+  "method": "MDAV (multivariate)",
+  "k": 5,
+  "records": 5000,
+  "released_attributes": [
+    "age",
+    "num_dependents",
+    "gross_income",
+    "deductions",
+    "taxable_income",
+    "capital_gains",
+    "tax_paid",
+    "gender",
+    "marital_status",
+    "education",
+    "occupation",
+    "region",
+    "city_tier"
+  ],
+  "numeric_aggregation": "group arithmetic mean",
+  "categorical_aggregation": "group mode (ties: alphabetical)",
+  "row_order": "randomly permuted; release_id carries no information",
+  "notes": [
+    "Each record is a group centroid, not a real taxpayer.",
+    "Means and totals of numeric attributes are preserved; variances are reduced.",
+    "Fractional ages / dependents are averages, not errors.",
+    "tax_paid is the group mean of tax paid and generally differs from the tax computed on the released taxable income (the schedule is non-linear).",
+    "Micro-aggregation reduces but does not eliminate disclosure risk."
+  ]
+}
