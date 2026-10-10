@@ -1,6 +1,7 @@
 # Micro-aggregation for Income & Tax Data Publication
 
 [![tests](https://github.com/awasthiprashast/microaggregation-income-tax/actions/workflows/tests.yml/badge.svg)](https://github.com/awasthiprashast/microaggregation-income-tax/actions/workflows/tests.yml)
+[![Live demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://microaggregation-income-tax.streamlit.app/)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -12,6 +13,8 @@ guard, a battery of utility and attack metrics, an interactive Streamlit dashboa
 > **Important:** micro-aggregation *reduces* disclosure risk; it does **not** make data absolutely
 > anonymous. Attribute-disclosure and background-knowledge attacks remain possible and are
 > measured explicitly in this project (see [Limitations](#limitations)).
+
+**Live demo: <https://microaggregation-income-tax.streamlit.app/>**
 
 ![Dashboard: original vs released records](docs/screenshots/02-anonymise-compare.png)
 
