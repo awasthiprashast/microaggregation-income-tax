@@ -142,7 +142,7 @@ Measured on {{n_features}}-dimensional encodings, the log–log slope of runtime
 
 {{table:scalability}}
 
-![Runtime](../results/figures/runtime.png)
+![MDAV runtime against the number of records n (left) and the group size k (right), log–log scale](../results/figures/runtime.png)
 
 Full derivations, a worked example and proofs are in [`docs/ALGORITHM.md`](ALGORITHM.md).
 
@@ -213,11 +213,11 @@ Income and tax statistics on the MDAV releases:
 
 {{table:income_stats}}
 
-![Information loss](../results/figures/information_loss.png)
+![Information loss against k for the three methods, raw scale (left) and log scale (right)](../results/figures/information_loss.png)
 
-![Income distribution](../results/figures/income_distribution.png)
+![Gross-income distribution of the original data and of the MDAV releases](../results/figures/income_distribution.png)
 
-![Effective tax rate by quintile](../results/figures/quintile_tax.png)
+![Effective tax rate by gross-income quintile, original data and MDAV releases](../results/figures/quintile_tax.png)
 
 Per-attribute statistics, MDAV k = {{k_detail}}:
 
@@ -239,11 +239,11 @@ one tax bracket; *Mean l* = mean distinct tax brackets per group; *p %-rule* = r
 failing the p %-rule (p = 10); *Collusion f = 0.5* = targets recovered exactly when the attacker
 knows half of all incomes.
 
-![Linkage risk](../results/figures/linkage_risk.png)
+![Record-linkage success against k; the dashed line is the k-anonymity bound 100/k](../results/figures/linkage_risk.png)
 
-![Attribute disclosure](../results/figures/attribute_disclosure.png)
+![Attribute disclosure against k: income within ±10 % (left) and bracket-homogeneous groups (right)](../results/figures/attribute_disclosure.png)
 
-![Collusion attack](../results/figures/collusion.png)
+![Background-knowledge (collusion) attack: simulated success and expected value f^(G−1)](../results/figures/collusion.png)
 
 ### 10.3 Comparison of original and anonymised records
 
@@ -330,9 +330,9 @@ shown.
 
 ## 13. Privacy–utility trade-off
 
-![Trade-off](../results/figures/tradeoff.png)
+![Privacy–utility trade-off: information loss against record-linkage success](../results/figures/tradeoff.png)
 
-![Trade-off, attribute disclosure](../results/figures/tradeoff_attribute.png)
+![Privacy–utility trade-off: information loss against attribute disclosure](../results/figures/tradeoff_attribute.png)
 
 * **MDAV dominates random grouping on utility** at equal k-anonymity: at k = 3 MDAV's IL is
   {{il_percent|mdav|3}} % against {{il_percent|random|3}} %.

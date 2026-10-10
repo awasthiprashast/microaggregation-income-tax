@@ -1,14 +1,53 @@
-# Micro-aggregation in Income and Tax Data Publication – Implementation
+# Micro-aggregation for Income & Tax Data Publication
+
+[![tests](https://github.com/awasthiprashast/microaggregation-income-tax/actions/workflows/tests.yml/badge.svg)](https://github.com/awasthiprashast/microaggregation-income-tax/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A complete, reproducible data-privacy project showing how **micro-aggregation (MDAV)** can protect
 sensitive financial records in an income/tax microdata release while preserving statistical
-utility — and where it falls short.
+utility — and, just as importantly, where it falls short. It includes the algorithm, a release
+guard, a battery of utility and attack metrics, an interactive Streamlit dashboard and a full report.
 
 > **Important:** micro-aggregation *reduces* disclosure risk; it does **not** make data absolutely
 > anonymous. Attribute-disclosure and background-knowledge attacks remain possible and are
 > measured explicitly in this project (see [Limitations](#limitations)).
 
----
+![Dashboard: original vs released records](docs/screenshots/02-anonymise-compare.png)
+
+## Highlights
+
+* **MDAV micro-aggregation** from scratch (NumPy), k-anonymous on all released attributes, means and total tax revenue preserved exactly.
+* **Two baselines**: individual ranking and random partition, to make the privacy–utility trade-off visible.
+* **Release guard**: whitelisted columns, shuffled rows, fresh ids, enforced k-anonymity — unsafe releases cannot be exported.
+* **Attack suite**: record linkage, interval disclosure, homogeneity / l-diversity / t-closeness, dominance and p%-rules, QI-inference, collusion.
+* **Safe-by-default dashboard**: exact original values are hidden unless a custodian toggle is switched on.
+* **Reproducible**: one command regenerates data, results, figures and the report; 26 unit tests.
+
+## Dashboard
+
+| | |
+|---|---|
+| ![Data & validation](docs/screenshots/01-data-validation.png) | ![Utility](docs/screenshots/03-utility.png) |
+| **Data & validation** — cleaning, repairs, imputation | **Utility** — distributions, regression validity, tax-rule consistency |
+| ![Privacy & attacks](docs/screenshots/04-privacy-attacks.png) | ![Trade-off](docs/screenshots/05-tradeoff.png) |
+| **Privacy & attacks** — linkage, disclosure, collusion | **Trade-off** — information loss vs. risk across k and methods |
+
+## Results at a glance (seed 42, n = 5,000)
+
+| Method | k | Information loss | Record-linkage success | Income within ±10 % |
+|---|---:|---:|---:|---:|
+| MDAV | 3 | 19.6 % | 26.5 % | 53.5 % |
+| MDAV | 5 | 27.0 % | 13.8 % | 46.8 % |
+| MDAV | 10 | 33.4 % | 5.9 % | 41.7 % |
+| MDAV | 20 | 39.5 % | 2.7 % | 40.8 % |
+| Individual ranking | 5 | 6.0 % | 99.8 % | 99.8 % |
+| Random partition | 5 | 80.1 % | 0.5 % | 13.5 % |
+
+MDAV keeps linkage risk below 1/k while individual ranking leaves records almost unique and
+random grouping destroys utility. Full numbers: [`results/summary.csv`](results/summary.csv).
+
+![Privacy–utility trade-off](results/figures/tradeoff.png)
 
 ## Contents
 
@@ -17,11 +56,11 @@ utility — and where it falls short.
 | Python source code | [`microagg/`](microagg/) package, [`run_experiments.py`](run_experiments.py) |
 | Synthetic dataset | [`data/synthetic_income_tax.csv`](data/synthetic_income_tax.csv) (generated, seed 42) |
 | Streamlit dashboard | [`app.py`](app.py) |
-| Dependencies | [`requirements.txt`](requirements.txt) |
+| Dependencies | [`requirements.txt`](requirements.txt), [`requirements-dev.txt`](requirements-dev.txt) |
 | Algorithm explanation (maths, intuition, complexity) | [`docs/ALGORITHM.md`](docs/ALGORITHM.md) |
 | Experimental results k = 3, 5, 10, 20 | [`results/summary.csv`](results/summary.csv), [`results/figures/`](results/figures/) |
 | Privacy–utility comparison, conclusions, limitations | [`docs/REPORT.md`](docs/REPORT.md) §10–15 |
-| Project report | [`docs/REPORT.md`](docs/REPORT.md) (generated from [`docs/report_template.md`](docs/report_template.md)) |
+| Project report | [`docs/Project_Report.pdf`](docs/Project_Report.pdf) / `.docx`; Markdown source [`docs/REPORT.md`](docs/REPORT.md), generated from [`docs/report_template.md`](docs/report_template.md) |
 | Unit tests | [`tests/test_microagg.py`](tests/test_microagg.py) |
 
 ## Setup
@@ -35,7 +74,8 @@ python -m venv .venv
 Activate it (Windows PowerShell: `.venv\Scripts\Activate.ps1`; macOS/Linux: `source .venv/bin/activate`), then:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt        # dashboard + library
+pip install -r requirements-dev.txt    # adds pytest and python-docx (tests, report export)
 ```
 
 ## Running
@@ -60,13 +100,21 @@ Then open http://localhost:8501. Tabs: data validation → anonymise & compare �
 privacy & attacks → trade-off across k → guarded export → about/limitations. You can generate
 synthetic data of any size/seed or upload your own CSV and choose which attributes to aggregate.
 
-**3. Run the tests:**
+**3. Export the report to Word and PDF** (PDF needs Microsoft Word on Windows):
+
+```bash
+python scripts/export_report.py --name "Your Name" --roll "Roll No." --instructor "Instructor" --institution "Institution"
+```
+
+Creates `docs/Project_Report.docx` and `docs/Project_Report.pdf` (cover page, table of contents, numbered figures).
+
+**4. Run the tests:**
 
 ```bash
 python -m pytest -q
 ```
 
-**4. Use the library directly:**
+**5. Use the library directly:**
 
 ```python
 from microagg.data_generator import generate_income_tax_data
@@ -131,14 +179,6 @@ Baselines: **individual ranking** (per-attribute micro-aggregation) and **random
 * Exact originals are visible only after switching on the off-by-default **custodian view**.
 * The saved record comparison (`results/record_comparison_mdav_k5.csv`) uses bands as well.
 
-## Key results (seed 42, n = 5,000)
-
-All values are computed by `run_experiments.py`; see `results/summary.csv` and `docs/REPORT.md`.
-MDAV gives k-anonymous releases whose linkage risk stays below 1/k for every k, while means and
-total tax revenue are preserved exactly. Information loss rises with k, and attribute disclosure
-stays substantial even at k = 20. Individual ranking keeps utility high but leaves records
-almost unique (blocked by the release guard). Random grouping protects but destroys utility.
-
 ## Limitations
 
 * Not absolute anonymity: k-anonymity bounds *identity* disclosure only.
@@ -159,6 +199,12 @@ app.py               Streamlit dashboard
 run_experiments.py   reproduces data, results, figures and docs/REPORT.md
 data/                synthetic dataset
 results/             metrics (CSV/JSON), guarded releases, figures
-docs/                ALGORITHM.md, report_template.md, REPORT.md
+docs/                ALGORITHM.md, report_template.md, REPORT.md, Project_Report.pdf/.docx, screenshots/
 tests/               pytest suite
+scripts/             report export (Word/PDF) and architecture diagram
+.github/workflows/   CI (pytest on Python 3.10–3.12)
 ```
+
+## License
+
+Released under the [MIT License](LICENSE). The dataset is entirely synthetic.

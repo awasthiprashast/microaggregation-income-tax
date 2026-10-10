@@ -140,7 +140,7 @@ T(n) = Σᵢ O(d·(n − 2ki)) ≈ O(n²·d / 4k) = **O(n² d / k)** time, **O(n
 Measured on 34-dimensional encodings, the log–log slope of runtime is
 **2.03** in *n* and **-0.98** in *k*, matching the predicted exponents 2 and −1.
 
-| sweep | n | k | d | seconds |
+| Sweep | n | k | d | Seconds |
 |---|---|---|---|---|
 | n | 1000 | 5 | 34 | 0.040 |
 | n | 2000 | 5 | 34 | 0.130 |
@@ -152,7 +152,7 @@ Measured on 34-dimensional encodings, the log–log slope of runtime is
 | k | 8000 | 10 | 34 | 1.217 |
 | k | 8000 | 20 | 34 | 0.615 |
 
-![Runtime](../results/figures/runtime.png)
+![MDAV runtime against the number of records n (left) and the group size k (right), log–log scale](../results/figures/runtime.png)
 
 Full derivations, a worked example and proofs are in [`docs/ALGORITHM.md`](ALGORITHM.md).
 
@@ -197,7 +197,7 @@ originals behind an explicit, off-by-default *custodian view*. (v) All randomnes
   share *f* of the population (collusion).
 * **Validation of cleaning:**
 
-| column | missing_in_input | non_numeric_coerced | out_of_range | edit_rule_violations | repaired_by_identity | imputed |
+| Column | Missing | Non-numeric | Out of range | Rule violations | Repaired (identity) | Imputed |
 |---|---|---|---|---|---|---|
 | age | 159 | 9 | 23 | 0 | 0 | 191 |
 | capital_gains | 165 | 0 | 0 | 0 | 0 | 165 |
@@ -256,15 +256,15 @@ Income and tax statistics on the MDAV releases:
 | MDAV k=10 | 0.379 | 29.735 | 65.579 | 38.600 |
 | MDAV k=20 | 0.377 | 29.510 | 65.579 | 35.200 |
 
-![Information loss](../results/figures/information_loss.png)
+![Information loss against k for the three methods, raw scale (left) and log scale (right)](../results/figures/information_loss.png)
 
-![Income distribution](../results/figures/income_distribution.png)
+![Gross-income distribution of the original data and of the MDAV releases](../results/figures/income_distribution.png)
 
-![Effective tax rate by quintile](../results/figures/quintile_tax.png)
+![Effective tax rate by gross-income quintile, original data and MDAV releases](../results/figures/quintile_tax.png)
 
 Per-attribute statistics, MDAV k = 5:
 
-| attribute | mean_original | mean_anonymized | mean_rel_diff_% | variance_ratio | ks_statistic | median_abs_rel_error_% |
+| Attribute | Mean (original) | Mean (released) | Mean diff. (%) | Variance ratio | KS statistic | Median abs. rel. error (%) |
 |---|---|---|---|---|---|---|
 | age | 41.09 | 41.09 | 0.00 | 0.89 | 0.07 | 6.67 |
 | num_dependents | 1.30 | 1.30 | 0.00 | 0.89 | 0.19 | 20.00 |
@@ -276,7 +276,7 @@ Per-attribute statistics, MDAV k = 5:
 
 Regression of log(1 + gross income) on demographics, MDAV k = 5:
 
-| term | coef_original | coef_anonymized | ci_overlap |
+| Term | Coef. (original) | Coef. (released) | CI overlap |
 |---|---|---|---|
 | intercept | 12.654 | 12.080 | 0.000 |
 | age | 0.058 | 0.086 | 0.000 |
@@ -319,11 +319,11 @@ one tax bracket; *Mean l* = mean distinct tax brackets per group; *p %-rule* = r
 failing the p %-rule (p = 10); *Collusion f = 0.5* = targets recovered exactly when the attacker
 knows half of all incomes.
 
-![Linkage risk](../results/figures/linkage_risk.png)
+![Record-linkage success against k; the dashed line is the k-anonymity bound 100/k](../results/figures/linkage_risk.png)
 
-![Attribute disclosure](../results/figures/attribute_disclosure.png)
+![Attribute disclosure against k: income within ±10 % (left) and bracket-homogeneous groups (right)](../results/figures/attribute_disclosure.png)
 
-![Collusion attack](../results/figures/collusion.png)
+![Background-knowledge (collusion) attack: simulated success and expected value f^(G−1)](../results/figures/collusion.png)
 
 ### 10.3 Comparison of original and anonymised records
 
@@ -331,7 +331,7 @@ Eight random records, MDAV k = 5. In line with the project's exposure rules, ori
 monetary values are shown as bands and ages as decades; per-record errors are deliberately not
 shown.
 
-| record | age · original | age · released | gross_income · original | gross_income · released | taxable_income · original | taxable_income · released | tax_paid · original | tax_paid · released | gender · original | gender · released | occupation · original | occupation · released | group size |
+| Record | Age (orig.) | Age (rel.) | Gross income (orig.) | Gross income (rel.) | Taxable income (orig.) | Taxable income (rel.) | Tax paid (orig.) | Tax paid (rel.) | Gender (orig.) | Gender (rel.) | Occupation (orig.) | Occupation (rel.) | Group size |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Sample 1 | 30–39 | 33.00 | ₹2.5L–5L | ₹2.72L | ₹0–2.5L | ₹1.67L | ₹0 | ₹0 | Female | Female | Freelancer | Freelancer | 5 |
 | Sample 2 | 50–59 | 46.20 | ₹2.5L–5L | ₹5.56L | ₹2.5L–5L | ₹3.76L | ₹0 | ₹0 | Female | Female | Self-Employed | Self-Employed | 5 |
@@ -344,7 +344,7 @@ shown.
 
 ### 10.4 Ablation: design of the distance space (MDAV, k = 5)
 
-| distance_space | il_percent | il_log_percent | categorical_change_% | gross_income_median_abs_rel_error_% | interval_disclosure_gross_income_% | homogeneous_records_% | dbrl_all_% |
+| Distance space | IL raw (%) | IL log (%) | Cat. changed (%) | Income median rel. error (%) | Income ±10% (%) | Bracket homog. (%) | DBRL all (%) |
 |---|---|---|---|---|---|---|---|
 | log + categorical (default) | 27.04 | 6.16 | 19.83 | 10.75 | 46.84 | 27.70 | 13.80 |
 | log, numeric only in distance | 20.28 | 2.27 | 36.89 | 4.98 | 78.46 | 57.30 | 16.22 |
@@ -424,9 +424,9 @@ shown.
 
 ## 13. Privacy–utility trade-off
 
-![Trade-off](../results/figures/tradeoff.png)
+![Privacy–utility trade-off: information loss against record-linkage success](../results/figures/tradeoff.png)
 
-![Trade-off, attribute disclosure](../results/figures/tradeoff_attribute.png)
+![Privacy–utility trade-off: information loss against attribute disclosure](../results/figures/tradeoff_attribute.png)
 
 * **MDAV dominates random grouping on utility** at equal k-anonymity: at k = 3 MDAV's IL is
   19.6 % against 62.1 %.

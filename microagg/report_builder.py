@@ -86,8 +86,39 @@ def _tables(res_dir: Path, summary: pd.DataFrame) -> dict[str, str]:
         if path.exists():
             df = pd.read_csv(path)
             fmt = ".3f" if name in ("scalability", "regression_mdav_k5") else ".2f"
-            t[name] = md_table(df, fmt)
+            t[name] = md_table(df.rename(columns=_pretty), fmt)
     return t
+
+
+PRETTY_HEADERS = {
+    "attribute": "Attribute", "mean_original": "Mean (original)", "mean_anonymized": "Mean (released)",
+    "mean_rel_diff_%": "Mean diff. (%)", "variance_ratio": "Variance ratio", "ks_statistic": "KS statistic",
+    "median_abs_rel_error_%": "Median abs. rel. error (%)",
+    "term": "Term", "coef_original": "Coef. (original)", "coef_anonymized": "Coef. (released)",
+    "ci_overlap": "CI overlap",
+    "distance_space": "Distance space", "il_percent": "IL raw (%)", "il_log_percent": "IL log (%)",
+    "categorical_change_%": "Cat. changed (%)",
+    "gross_income_median_abs_rel_error_%": "Income median rel. error (%)",
+    "interval_disclosure_gross_income_%": "Income ±10% (%)",
+    "homogeneous_records_%": "Bracket homog. (%)", "dbrl_all_%": "DBRL all (%)",
+    "known_fraction": "Known share f", "exposed_targets_%": "Exposed targets (%)",
+    "exactly_recovered_%": "Recovered exactly (%)", "expected_%": "Expected (%)",
+    "sweep": "Sweep", "seconds": "Seconds",
+    "column": "Column", "missing_in_input": "Missing", "non_numeric_coerced": "Non-numeric",
+    "out_of_range": "Out of range", "edit_rule_violations": "Rule violations",
+    "repaired_by_identity": "Repaired (identity)", "imputed": "Imputed",
+    "record": "Record", "group size": "Group size",
+}
+
+
+def _pretty(col: str) -> str:
+    """Human-readable table header (no '|' characters - they would break Markdown tables)."""
+    if col in PRETTY_HEADERS:
+        return PRETTY_HEADERS[col]
+    if " · " in col:                                   # record-comparison columns
+        attr, side = col.split(" · ")
+        return f"{attr.replace('_', ' ').capitalize()} ({'orig.' if side == 'original' else 'rel.'})"
+    return col
 
 
 def build_report(template_path: Path, res_dir: Path, out_path: Path) -> Path:
