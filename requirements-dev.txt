@@ -1,3 +1,4 @@
 -r requirements.txt
 pytest>=7.0
+scikit-learn>=1.3   # ML reconstruction attack (real-data experiments)
 python-docx>=1.1   # only for scripts/export_report.py (Word/PDF report)

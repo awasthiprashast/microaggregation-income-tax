@@ -18,6 +18,20 @@ guard, a battery of utility and attack metrics, an interactive Streamlit dashboa
 
 ![Dashboard: original vs released records](docs/screenshots/02-anonymise-compare.png)
 
+## Real-data extension: diversity-aware MDAV (new)
+
+The synthetic benchmark below was extended to **real data** (US Census ACS 2022 PUMS, California,
+5,000 sampled persons: [`data/acs_ca_2022_sample.csv`](data/acs_ca_2022_sample.csv)) with three additions
+in [`microagg/advanced.py`](microagg/advanced.py):
+
+* **DA-MDAV**: MDAV on quasi-identifiers plus a swap/merge repair so every group is *l*-diverse and *t*-close on income band, still *k*-anonymous.
+* **No-release baseline** for a machine-learning reconstruction attack, so only disclosure *caused by the release* is counted.
+* **Group-level exposure** metrics (share of people in single-income-band groups) and a noisy-centroid negative result.
+
+At k = 5, plain MDAV leaves 22.8 % of people in single-band groups; DA-MDAV leaves 0 % at 2.5x the information loss.
+Reproduce with `python run_real_experiments.py` (needs the raw PUMS file, see `microagg/realdata.py`; ~20 min);
+write-up in [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md), results in [`results/real/`](results/real/).
+
 ## Highlights
 
 * **MDAV micro-aggregation** from scratch (NumPy), k-anonymous on all released attributes, means and total tax revenue preserved exactly.

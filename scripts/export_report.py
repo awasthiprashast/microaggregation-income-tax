@@ -146,7 +146,7 @@ def cover_page(doc, args, title: str) -> None:
     r.font.size, r.bold, r.font.color.rgb = Pt(24), True, ACCENT
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("Project Report")
+    r = p.add_run(args.doctype)
     r.font.size = Pt(15)
     for _ in range(4):
         doc.add_paragraph()
@@ -166,6 +166,8 @@ def cover_page(doc, args, title: str) -> None:
         rb.font.size = Pt(12)
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 
+    if args.no_toc:
+        return
     p = doc.add_paragraph()
     r = p.add_run("Table of Contents")
     r.bold, r.font.size, r.font.color.rgb = True, Pt(16), ACCENT
@@ -377,16 +379,19 @@ def main(argv=None) -> int:
     ap.add_argument("--institution", default="[Institution]")
     ap.add_argument("--date", default=date.today().strftime("%d %B %Y"))
     ap.add_argument("--out", default="Project_Report")
+    ap.add_argument("--src", default="REPORT.md", help="Markdown file inside docs/")
+    ap.add_argument("--doctype", default="Project Report", help="subtitle on the cover page")
+    ap.add_argument("--no-toc", action="store_true")
     ap.add_argument("--no-pdf", action="store_true")
     args = ap.parse_args(argv)
 
-    md = (DOCS / "REPORT.md").read_text(encoding="utf-8")
+    md = (DOCS / args.src).read_text(encoding="utf-8")
     title = re.search(r"^#\s+(.*)$", md, flags=re.M).group(1)
     md = re.sub(r"^\*\*Project report\*\*.*$", "", md, flags=re.M)     # replaced by the cover page
 
     doc = Document()
     setup_styles(doc)
-    add_footer(doc, "Micro-aggregation in Income and Tax Data Publication")
+    add_footer(doc, "Micro-aggregation in Income and Tax Data Publication")  # footer text
     cover_page(doc, args, title)
     convert(md, doc)
 

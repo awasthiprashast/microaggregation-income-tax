@@ -12,3 +12,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Raw downloads (large, re-fetchable)
+data/raw/
+docs/Case_Study_*
